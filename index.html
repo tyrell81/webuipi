@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Pi Media</title>        
+        <link href="css/bootstrap.min.css" rel="stylesheet"><!-- Bootstrap Core CSS -->        
+        <link href="css/metisMenu.min.css" rel="stylesheet"><!-- MetisMenu CSS -->        
+        <link href="css/timeline.css" rel="stylesheet"><!-- Timeline CSS -->        
+        <link href="css/startmin.css" rel="stylesheet"><!-- Custom CSS -->        
+        <link href="css/morris.css" rel="stylesheet"><!-- Morris Charts CSS -->        
+        <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"><!-- Custom Fonts -->
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div id="wrapper">
+            <!-- Navigation -->
+            <!-- <div include-navigation-html="navigation.html"></div> -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">Pi radio</a>
+                </div>
+            </nav>
+            <!-- Page Content -->
+            <div id="page-wrapper">
+                <div class="container-fluid">                    
+                    <div class="row show-grid">
+                        <div class="col-sm-8 col-sm-offset-2" style="padding: 20px 30px 0px 30px;">
+                            <div class="row">
+                                <label>Playlist</label>
+                            </div>
+                            <div class="row" style="text-align:center;">
+                                <select id="pls_list" class="form-control">
+                                    <option>- empty -</option>
+                                </select>
+                            </div>
+                            <div class="row" style="text-align:center; padding: 20px 0px 0px 0px;">
+                                <button id="play_btn" type="submit" class="btn btn-primary" style="margin: 0px 5px;">Play</button>                                
+                                <button id="stop_btn" type="submit" class="btn btn-primary" style="margin: 0px 5px;">Stop</button>
+                            </div>
+                            <div class="row" style="text-align:center; padding: 15px 0px 20px 0px;">
+                                <button id="volume_down" type="submit" class="btn btn-primary" style="margin: 0px 5px;">-</button>                                
+                                <label id="volume" style="width: 23px;">0</label>
+                                <button id="volume_up" type="submit" class="btn btn-primary" style="margin: 0px 5px;">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->                
+            </div>
+            <!--- /Page Content ---  /#page-wrapper --->
+
+        </div><!-- /#wrapper -->
+        <script src="js/jquery.min.js"></script><!-- jQuery -->
+        <script src="js/bootstrap.min.js"></script><!-- Bootstrap Core JavaScript -->
+        <script src="js/metisMenu.min.js"></script><!-- Metis Menu Plugin JavaScript -->
+        <script src="js/startmin.js"></script><!-- Custom Theme JavaScript -->
+        <script src="js/webui.js"></script>
+    </body>
+</html>
