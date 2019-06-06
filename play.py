@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 import json, cgi, cgitb, os, sys, subprocess, re
 
-
+# Для парсера m3u
 class track():
     def __init__(self, length, title, path):
         self.length = length
         self.title = title
         self.path = path
 
-
+# Парсер m3u плейлиста
 def parseM3u(infile):
     # https://github.com/dvndrsn/M3uParser/blob/master/m3uparser.py
     """
@@ -57,6 +57,7 @@ def parseM3u(infile):
 
 
 def main(argv):
+    # Каталог с плейлистами
     playlist_dir = "/home/pi/playlist"    
     req = cgi.FieldStorage()
 
@@ -158,6 +159,7 @@ def main(argv):
         print str(volume)
         return 
 
+    # Обработка GET-запроса, возвращает список плейлистов pls в playlist_dir
     # resp[0] = "process GET request, requset keys count: " + str(len(req.keys()))
     if len(req.keys()) == 0:
         pls_files_list = []
