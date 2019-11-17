@@ -84,6 +84,9 @@ function fill_dropdown(dropdown_id)
                 option.text = data[i];
                 option.value = i;
                 dropdown.add(option);
+                //if (data[i] == "Chroma Piano.m3u")
+                if (data[i] == "RadioC.m3u")
+                    option.selected=true
             }
         } else {
             console.log("GET ERROR, status: " + request.status);
