@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#/usr/bin/env python
 
 print "Content-type: text/html"
 print

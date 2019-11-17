@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import json, cgi, cgitb, os, sys, subprocess, re
 
 # Для парсера m3u
@@ -59,6 +60,8 @@ def parseM3u(infile):
 def main(argv):
     # Каталог с плейлистами
     playlist_dir = "/home/pi/playlist"    
+    # OrangePiZero: "'Line Out'"  Raspberry: "'master'"
+    amixer_control = "'Line Out'"
     req = cgi.FieldStorage()
 
     resp = {}
@@ -121,14 +124,12 @@ def main(argv):
         # out = subprocess.Popen(['amixer', 'sget', 'Master'], shell=False, 
         #     stdout=subprocess.PIPE, stderr=devnull)
 
-        master = "'Master'"
-        
-        out = subprocess.check_output(["amixer", "sget", master])
+        out = subprocess.check_output(["amixer", "sget", amixer_control])
         # stdout, stderr = out.communicate()
         if out is None:
-            print "ERROR get out"
+            print "ERROR get amixer out"
             return
-        # print "out: " + out
+        print "out: " + out
         re1 = []
         re1 = re.findall("\[.*\%\]", str(out))
         # print "re.findall: " + "".join(re1)
@@ -143,19 +144,20 @@ def main(argv):
             print "ERROR find re2"
             return
         vol_str = str(re2[0])
-        # print "vol_str:" + vol_str
+        #print "vol_str:" + vol_str
         if not vol_str:
             print "ERROR find vol_str"
             return
         volume = int(vol_str)
         if req.getvalue("volume").upper() != "GET":
-            if req.getvalue("volume").upper() == "UP" and volume < 100:
-                volume += 1
-            if req.getvalue("volume").upper() == "DOWN" and volume > 0:
-                volume -= 1
-            os.system("/usr/bin/amixer set " + master + " \"" + str(volume) + "%\" > /dev/null")
+            if req.getvalue("volume").upper() == "UP" and volume < 96:
+                volume += 5
+            if req.getvalue("volume").upper() == "DOWN" and volume > 4:
+                volume -= 5
+            #print "/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null"
+            os.system("/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null")
             # out = subprocess.check_output(["/usr/bin/amixer", "set", "'Master'", "\"" + str(volume) + "%\""])
-            # print "out: " + out
+            #print "out: " + out
         print str(volume)
         return 
 

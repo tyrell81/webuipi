@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 '''
 https://gist.github.com/tliron/8e9757180506f25e46d9
