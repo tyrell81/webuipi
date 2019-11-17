@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import json, cgi, cgitb, os, sys, subprocess, re
 
@@ -59,9 +59,10 @@ def parseM3u(infile):
 
 def main(argv):
     # Каталог с плейлистами
-    playlist_dir = "/home/pi/playlist"    
+    playlist_dir = "data"
     # OrangePiZero: "'Line Out'"  Raspberry: "'master'"
     amixer_control = "'Line Out'"
+    #amixer_control = "'Master'"
     req = cgi.FieldStorage()
 
     resp = {}
@@ -75,11 +76,11 @@ def main(argv):
 
     # Play
     if req.getvalue("play") is not None:
-        # subprocess.call(["/usr/bin/mpg123", "\"/home/pi/music/bARTek - Walking K feat. Ashes and Dreams.mp3\""])
-        # subprocess.call(["/usr/bin/mpg123", "/home/pi/music/bARTek - Walking K feat. Ashes and Dreams.mp3"])
-        # os.system("/usr/bin/mpg123 \"/home/pi/music/bARTek - Walking K feat. Ashes and Dreams.mp3\"")
-        # subprocess.Popen(["/usr/bin/mpg123", song])        
-        # song = "/home/pi/music/bARTek - Walking K feat. Ashes and Dreams.mp3"        
+        # subprocess.call(["/usr/bin/mpg123", "\"data/music/bARTek - Walking K feat. Ashes and Dreams.mp3\""])
+        # subprocess.call(["/usr/bin/mpg123", "data/music/bARTek - Walking K feat. Ashes and Dreams.mp3"])
+        # os.system("/usr/bin/mpg123 \"data/music/bARTek - Walking K feat. Ashes and Dreams.mp3\"")
+        # subprocess.Popen(["/usr/bin/mpg123", song])
+        # song = "data/music/bARTek - Walking K feat. Ashes and Dreams.mp3"
         os.system("killall mpg123")
 
         playlist = req.getvalue("play")
@@ -129,7 +130,7 @@ def main(argv):
         if out is None:
             print("ERROR get amixer out")
             return
-        print("out: " + out)
+        #print("out: " + str(out))
         re1 = []
         re1 = re.findall("\[.*\%\]", str(out))
         # print "re.findall: " + "".join(re1)

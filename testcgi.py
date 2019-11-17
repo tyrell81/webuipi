@@ -1,6 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import sys, os, re, shutil, json, urllib, urllib3, cgi
+import sys, os, re, shutil, json, urllib, cgi
 
 # Fix issues with decoding HTTP responses
 #reload(sys)

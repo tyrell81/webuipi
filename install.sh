@@ -9,11 +9,11 @@ fi
 # Arguments
 while [ "$1" != "" ]; do
     case $1 in
-        -n | --noapt | --no-apt )
+        -na | --noapt | --no-apt )
             NOAPT="Y"
             ;;
-        -g | -c | --git-clone | --gitclone | --git )
-            GIT_CLONE="Y"
+        -ng | --no-git-clone | --nogitclone | --nogit )
+            NOGIT_CLONE="Y"
             ;;
 #        -f | --file )           
 #            shift
@@ -52,6 +52,9 @@ if [ ! -n "$NOAPT" ]; then
     REPLACE_FROM="static-file.exclude-extensions.*"
     REPLACE_TO="static-file.exclude-extensions = ( \".php\", \".pl\", \".fcgi\", \".py\" )"
     sed -i -e "s/$REPLACE_FROM/$REPLACE_TO/g" /etc/lighttpd/lighttpd.conf
+    REPLACE_FROM="server.username.*"
+    REPLACE_TO="server.username             = \"pi\""
+    sed -i -e "s/$REPLACE_FROM/$REPLACE_TO/g" /etc/lighttpd/lighttpd.conf
     [ -f /etc/lighttpd/conf-enabled/10-cgi.conf ] && rm -f /etc/lighttpd/conf-enabled/10-cgi.conf
     /bin/cat <<EOF >/etc/lighttpd/conf-enabled/10-cgi.conf
 server.modules += ( "mod_cgi" )
@@ -63,7 +66,7 @@ EOF
 fi
 
 # git clone
-if [ ! -n "$GIT_CLONE" ]; then
+if [ ! -n "$NOGIT_CLONE" ]; then
     GIT_STATUS=$(dpkg -l | grep "git\ ")
     if [ ! -n "$GIT_STATUS" ]; then
         echo "Install git package"
@@ -86,9 +89,11 @@ fi
 
 # Permission
 echo "Set permissions"
-chown -R www-data:www-data "$HTTP_HOME"
+chown -R pi:www-data "$HTTP_HOME"
+chown -R pi:www-data /var/run/lighttpd
+chown -R pi:www-data /var/log/lighttpd
 [ -d "$HTTP_HOME/data" ] && mkdir -p "$HTTP_HOME/data"
-chown -R www-data:pi "$HTTP_HOME/data"
+#chown -R pi:www-data "$HTTP_HOME/data"
 chmod -R 775 "$HTTP_HOME/data"
 
 echo ".Done"
