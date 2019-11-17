@@ -70,7 +70,7 @@ def main(argv):
     if req.getvalue("test") is not None:
         resp[0] = "got test POST request:"
         resp[1] = req.getvalue("test")
-        print(json.dumps(resp))
+        print json.dumps(resp)
         return
 
     # Play
@@ -87,34 +87,34 @@ def main(argv):
         playlist_path = playlist_dir + "/" + playlist
 
         if not os.path.isfile(playlist_path):
-            print("ERROR: file not found: " + playlist_path)
+            print "ERROR: file not found: " + playlist_path
             return
         if os.path.splitext(playlist_path)[1] != ".m3u":
-            print("ERROR: file not m3u playlist: " + playlist_path)
+            print "ERROR: file not m3u playlist: " + playlist_path
             return
 
         playlist_parsed = parseM3u(playlist_path)
         song = track(None, None, None)
         for pls_track in playlist_parsed:
-            print((pls_track.title, pls_track.length, pls_track.path))
+            print (pls_track.title, pls_track.length, pls_track.path)
             song = pls_track
             break
 
         if song.path is None:
-            print("ERROR: track parse error")
+            print "ERROR: track parse error"
             return
 
         command = ['/usr/bin/mpg123', 'mpg123', song.path]
         os.spawnlp(os.P_NOWAIT, *command)
     
-        print("OK")
+        print "OK"
         exit
         return
 
     # Stop
     if req.getvalue("stop") is not None:
         os.system("killall mpg123")
-        print("OK")
+        print "OK"
         return
 
     # Volume get
@@ -127,26 +127,26 @@ def main(argv):
         out = subprocess.check_output(["amixer", "sget", amixer_control])
         # stdout, stderr = out.communicate()
         if out is None:
-            print("ERROR get amixer out")
+            print "ERROR get amixer out"
             return
-        print("out: " + out)
+        print "out: " + out
         re1 = []
         re1 = re.findall("\[.*\%\]", str(out))
         # print "re.findall: " + "".join(re1)
         if re1.count == 0:
-            print("ERROR find re1")
+            print "ERROR find re1"
             return        
         re2 = []
         # print "re1[0]: " + str(re1[0])
         re2 = re.findall("\d+", str(re1[0]))
         # print "re2:" + "".join(re2)
         if re2.count == 0:
-            print("ERROR find re2")
+            print "ERROR find re2"
             return
         vol_str = str(re2[0])
         #print "vol_str:" + vol_str
         if not vol_str:
-            print("ERROR find vol_str")
+            print "ERROR find vol_str"
             return
         volume = int(vol_str)
         if req.getvalue("volume").upper() != "GET":
@@ -158,12 +158,12 @@ def main(argv):
             os.system("/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null")
             # out = subprocess.check_output(["/usr/bin/amixer", "set", "'Master'", "\"" + str(volume) + "%\""])
             #print "out: " + out
-        print(str(volume))
+        print str(volume)
         return 
 
     # Обработка GET-запроса, возвращает список плейлистов pls в playlist_dir
     # resp[0] = "process GET request, requset keys count: " + str(len(req.keys()))
-    if len(list(req.keys())) == 0:
+    if len(req.keys()) == 0:
         pls_files_list = []
         resp = {}
         for filename in os.listdir(playlist_dir):
@@ -175,7 +175,7 @@ def main(argv):
         for pls_file in pls_files_list:
             i += 1
             resp[i] = pls_file
-        print(json.dumps(resp))        
+        print json.dumps(resp)        
         return
 
 if __name__ == '__main__':
