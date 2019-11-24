@@ -56,13 +56,29 @@ def parseM3u(infile):
     infile.close()
     return playlist
 
+# Определение amixer_control воспроизведения - pvolume pswitch pswitch-joined
+def get_amixer_control():
+    # OrangePiZero: "'Line Out'"  Raspberry: "'master'"
+    control = "master"
+    out = subprocess.check_output("amixer | grep -B1 pvolume | grep -B1 pswitch | grep -v cswitch | grep -B1 Capabilities | grep 'Simple mixer control'", shell=True)
+    # print("out: " + str(out))
+    if out is None:
+        print("ERROR get amixer out")
+        return control
+    re1 = []
+    re1 = re.findall("\'.*\'", str(out))
+    if re1[0] is None:
+        print("ERROR parse amixer out")
+        return control
+    control = str(re1[0])
+    # print("control: " + control)
+    return control
+
 
 def main(argv):
     # Каталог с плейлистами
     playlist_dir = "data"
-    # OrangePiZero: "'Line Out'"  Raspberry: "'master'"
-    amixer_control = "'Line Out'"
-    #amixer_control = "'Master'"
+    amixer_control = get_amixer_control()
     req = cgi.FieldStorage()
 
     resp = {}

@@ -10,7 +10,7 @@ $("#volume_down").click(function() { volume_manager("Down"); });
 function play_manager(command)
 {
     dropdown_id = "pls_list";
-    let url = "/play.py";    
+    let url = "play.py";
     const request = new XMLHttpRequest();
     request.open('POST', url, true);
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -68,7 +68,7 @@ function fill_dropdown(dropdown_id)
     }
     dropdown.length = 0;
 
-    let url = "/play.py";    
+    let url = "play.py";
     const request = new XMLHttpRequest();
     request.open('GET', url, true);
 
@@ -104,7 +104,7 @@ function fill_dropdown(dropdown_id)
 
 function volume_manager(command)
 {
-    let url = "/play.py";    
+    let url = "play.py";
     const request = new XMLHttpRequest();    
     request.open('POST', url, true);
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
