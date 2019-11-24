@@ -1,7 +1,7 @@
 SHELL=/bin/sh
 PATH=/home/pi/bin:/home/pi/webuipi/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-# crontab -u pi /home/pi/webuipi/bin/crontab 
+# crontab -u pi /var/www/html/data/crontab 
 
 # m h dom mon dow user	command
 #
@@ -9,13 +9,13 @@ PATH=/home/pi/bin:/home/pi/webuipi/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin
 # Alarm clock
 #30 21    * * *    pi       ( /usr/local/bin/set_volume.sh 77 && /usr/local/bin/mpg_play_m3u.sh /home/pi/playlist/CALM\ RADIO\ -\ SOLO\ PIANO.m3u )
 #00 22    * * *    pi       ( killall mpg123 )
-30 21    * * *           ( /usr/local/bin/set_volume.sh 77 && /usr/local/bin/mpg_play_m3u.sh /home/pi/playlist/CALM\ RADIO\ -\ SOLO\ PIANO.m3u )
+30 21    * * *           ( /var/www/html/data/tmp/set_volume.sh 77 && /var/www/html/data/tmp/mpg_play_m3u.sh /var/www/html/data/Chroma\ Piano.m3u )
 00 22    * * *           ( killall mpg123 )
 
-52 05    * * 1-5         ( /usr/local/bin/set_volume.sh 78 && /usr/local/bin/mpg_play_m3u.sh /home/pi/playlist/RadioC.m3u )
+52 05    * * 1-5         ( /var/www/html/data/tmp/set_volume.sh 78 && /var/www/html/data/tmp/mpg_play_m3u.sh /var/www/html/data/RadioC.m3u )
 15 06    * * 1-5         ( killall mpg123 )
 
-00 09    * * 6,0         ( /usr/local/bin/set_volume.sh 78 && /usr/local/bin/mpg_play_m3u.sh /home/pi/playlist/RadioC.m3u )
+00 09    * * 6,0         ( /var/www/html/data/tmp/set_volume.sh 78 && /var/www/html/data/tmp/mpg_play_m3u.sh /var/www/html/data/RadioC.m3u )
 15 10    * * 6,0         ( killall mpg123 )
 
 #*  *     * * *           ( /home/pi/webuipi/bin/touch_test.sh > /tmp/touch_test.out )
