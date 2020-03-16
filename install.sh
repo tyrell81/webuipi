@@ -84,7 +84,7 @@ if [ ! -n "$NOGIT_CLONE" ]; then
     cp -R webuipi/* "$HTTP_HOME/"
     rm -rf webuipi
     [ -f "$HTTP_HOME/../index.lighttpd.html" ] && mv "$HTTP_HOME/../index.lighttpd.html" "$HTTP_HOME/index.lighttpd.html"
-    cd "$C_PWD"
+    cd "$C_PWD"ex.li
 fi
 
 # Permission
@@ -92,6 +92,9 @@ echo "Set permissions"
 chown -R pi:www-data "$HTTP_HOME"
 chown -R pi:www-data /var/run/lighttpd
 chown -R pi:www-data /var/log/lighttpd
+mkdir -p /var/log/webuipi
+chown -R pi:www-data /var/log/webuipi
+chmod -R 775 /var/log/webuipi
 [ -d "$HTTP_HOME/data" ] && mkdir -p "$HTTP_HOME/data"
 #chown -R pi:www-data "$HTTP_HOME/data"
 chmod -R 775 "$HTTP_HOME/data"

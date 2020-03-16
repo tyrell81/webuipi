@@ -24,8 +24,8 @@ function play_manager(command)
         if (request.status == 200) {
             console.log("Post readyState: " + request.readyState + ", got response: " + request.responseText);
         } else {
-            console.log("SEND ERROR, status: " + request.status);
-            alert("SEND ERROR, status: " + request.status);
+            console.log("play_manager SEND ERROR, status: " + request.status);
+            alert("play_manager SEND ERROR, status: " + request.status);
         }
     }
     request.onerror = function() {
@@ -89,15 +89,15 @@ function fill_dropdown(dropdown_id)
                     option.selected=true
             }
         } else {
-            console.log("GET ERROR, status: " + request.status);
-            alert("GET ERROR, status: " + request.status);
+            console.log("fill_dropdown GET ERROR, status: " + request.status);
+            alert("fill_dropdown GET ERROR, status: " + request.status);
         }
     }
     request.onerror = function() {
         console.error("An error occurred fetching the JSON from " + url);
     };
     
-    console.log("Request GET");
+    console.log("fill_dropdown Request GET");
     request.send();
 }
 
@@ -121,8 +121,8 @@ function volume_manager(command)
             console.log("Post volume readyState: " + request.readyState + ", got response: " + request.responseText);            
             volume_label.innerHTML = request.responseText;// request.responseText
         } else {
-            console.log("SEND ERROR, status: " + request.status);
-            alert("SEND ERROR, status: " + request.status);
+            console.log("volume_manager SEND ERROR, status: " + request.status);
+            alert("volume_manager SEND ERROR, status: " + request.status);
         }
     }
     request.onerror = function() {
