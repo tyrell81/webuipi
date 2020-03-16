@@ -84,7 +84,7 @@ if [ ! -n "$NOGIT_CLONE" ]; then
     cp -R webuipi/* "$HTTP_HOME/"
     rm -rf webuipi
     [ -f "$HTTP_HOME/../index.lighttpd.html" ] && mv "$HTTP_HOME/../index.lighttpd.html" "$HTTP_HOME/index.lighttpd.html"
-    cd "$C_PWD"ex.li
+    cd "$C_PWD"
 fi
 
 # Permission
