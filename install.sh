@@ -98,6 +98,7 @@ chmod -R 775 /var/log/webuipi
 [ -d "$HTTP_HOME/data" ] && mkdir -p "$HTTP_HOME/data"
 #chown -R pi:www-data "$HTTP_HOME/data"
 chmod -R 775 "$HTTP_HOME/data"
+chmod +x "$HTTP_HOME/play.py"
 
 echo ".Done"
 
