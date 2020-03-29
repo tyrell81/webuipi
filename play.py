@@ -5,7 +5,8 @@
 import json, cgi, cgitb, os, sys, subprocess, re, datetime
 
 # Каталог с плейлистами
-playlist_dir = "data"
+file_path = os.path.realpath(__file__)
+playlist_dir = str(os.path.dirname(file_path)) + "/data"
 
 # Для парсера m3u
 class track():
@@ -65,7 +66,7 @@ def parseM3u(infile):
 def get_amixer_control():
     # OrangePiZero: "'Line Out'"  Raspberry: "'master'"
     control = "master"
-    out = subprocess.check_output("amixer | grep -B1 pvolume | grep -B1 pswitch | grep -v cswitch | grep -B1 Capabilities | grep 'Simple mixer control'", shell=True)
+    out = subprocess.check_output("amixer | grep -B1 pvolume | grep -B1 pswitch | grep -v cswitch | grep -B1 Capabilities | grep -m1 'Simple mixer control'", shell=True)
     # print("out: " + str(out))
     if out is None:
         print("ERROR get amixer out")
@@ -112,6 +113,7 @@ def play(playlist, debug):
     os.system("killall mpg123 &>/dev/null ; sleep 1")
 
     playlist_path = playlist_dir + "/" + playlist
+    log("playlist_path: " + playlist_path, debug)
 
     if not os.path.isfile(playlist_path):
         log("ERROR: file not found: " + playlist_path, True)
@@ -141,7 +143,8 @@ def play(playlist, debug):
 
 def stop(debug):
     log("stop():", debug)
-    os.system("killall mpg123 2>/dev/null")
+    #os.system("killall mpg123 2>/dev/null")
+    os.system("kill -9 `pidof mpg123` 2>/dev/null")
     log("OK", True)
     return
 
@@ -153,6 +156,7 @@ def volume(action, value, debug):
     #     stdout=subprocess.PIPE, stderr=devnull)
 
     amixer_control = get_amixer_control()
+    log("amixer_control: " + str(amixer_control), debug)
 
     out = subprocess.check_output(["amixer", "sget", amixer_control])
     # stdout, stderr = out.communicate()
@@ -160,6 +164,7 @@ def volume(action, value, debug):
         log("ERROR get amixer out", True)
         return
     #print("out: " + str(out))
+    log("out: " + str(out), debug)
     re1 = []
     re1 = re.findall("\[.*\%\]", str(out))
     # print "re.findall: " + "".join(re1)
@@ -174,7 +179,7 @@ def volume(action, value, debug):
         log("ERROR find re2", True)
         return
     vol_str = str(re2[0])
-    #print "vol_str:" + vol_str
+    log("vol_str:" + vol_str, debug)
     if not vol_str:
         log("ERROR find vol_str", True)
         return
@@ -188,7 +193,7 @@ def volume(action, value, debug):
             if value is None:
                 value = 75
             volume = value
-        #print "/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null"
+        log("/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null", debug)
         os.system("/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null")
         # out = subprocess.check_output(["/usr/bin/amixer", "set", "'Master'", "\"" + str(volume) + "%\""])
         #print "out: " + out
