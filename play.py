@@ -83,7 +83,8 @@ def log(msg, toconsole):
     date_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     f = open("/var/log/webuipi/webuipi.log", "a+")
     f.write(date_str + "  " + msg + "\n")
-    f.close()
+    f.flush()
+    f.close()    
     if toconsole:
         print(msg)
 
@@ -144,8 +145,8 @@ def stop(debug):
     log("OK", True)
     return
 
-def volume(action, debug):
-    log("volume(): " + action, debug)
+def volume(action, value, debug):
+    log("volume(): " + action + ", " + str(value), debug)
     # vol_str = os.system("amixer sget Master | grep \": Playback\" | grep -v Limits | grep -v grep")
     # devnull = open(os.devnull, 'wb')
     # out = subprocess.Popen(['amixer', 'sget', 'Master'], shell=False, 
@@ -183,6 +184,10 @@ def volume(action, debug):
             volume += 5
         if action.upper() == "DOWN" and volume > 4:
             volume -= 5
+        if action.upper() == "SET":
+            if value is None:
+                value = 75
+            volume = value
         #print "/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null"
         os.system("/usr/bin/amixer set " + amixer_control + " \"" + str(volume) + "%\" > /dev/null")
         # out = subprocess.check_output(["/usr/bin/amixer", "set", "'Master'", "\"" + str(volume) + "%\""])
@@ -207,7 +212,9 @@ def get_playlist(debug):
     return
 
 def main(argv):
-    # Использование из cli: play.py volume=up
+    # Использование из cli: 
+    # sudo -u pi ./play.py volume=set value=50
+    # sudo -u pi ./play.py play='Chroma Piano.m3u'
     if len(argv) > 0:
         log(str(len(sys.argv)) + " argv: " + str(argv), True)
         for arg in argv:
@@ -234,10 +241,15 @@ def main(argv):
             stop(True)
             return
         if args[0] == "volume":
-            action = ""
+            action = "DOWN"
+            value = 75
             if len(args) > 1:
                 action = args[1].upper()
-            volume(action, True)
+            if len(argv) >= 2:
+                args = argv[1].split("=")
+                if len(args) > 1 and args[0] == "value":
+                    value = int(args[1])
+            volume(action, value, True)
             return
         if args[0] == "pls" or args[0] == "get":
             get_playlist(True)
@@ -266,11 +278,16 @@ def main(argv):
             # Volume
             if req.getvalue("volume") is not None:
                 action = "GET"
+                value = 75
                 if req.getvalue("volume").upper() == "UP":
                     action = "UP"
                 if req.getvalue("volume").upper() == "DOWN":
                     action = "DOWN"
-                volume(action, None)
+                if req.getvalue("volume").upper() == "SET":
+                    action = "SET"
+                if "value" in req:
+                    value = req.getvalue("value")
+                volume(action, value, None)
                 return
 
             # Обработка GET-запроса, возвращает список плейлистов pls в playlist_dir
@@ -280,7 +297,7 @@ def main(argv):
                 # print('{"1": "Chroma Piano.m3u", "2": "RadioC.m3u"}')
         except:
             # err = datetime.datetime.now().strftime("%d-%b-%Y (%H:%M:%S.%f)") + 
-            log("Unexpected error:" + sys.exc_info()[0])
+            log("Unexpected error:" + sys.exc_info()[0], False)
 
 
 if __name__ == '__main__':
