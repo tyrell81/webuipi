@@ -89,6 +89,9 @@ if [ ! -n "$NOGIT_CLONE" ]; then
     cd "$C_PWD"
 fi
 
+echo "Add groups"
+usermod -a -G www-data,audio,crontab $THISUSER
+
 # Permission
 echo "Set permissions"
 chown -R $THISUSER:www-data "$HTTP_HOME"
@@ -103,5 +106,3 @@ chmod -R 775 "$HTTP_HOME/data"
 chmod +x "$HTTP_HOME/play.py"
 
 echo ".Done"
-
-
