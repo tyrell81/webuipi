@@ -6,6 +6,8 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+THISUSER=orangepi
+
 # Arguments
 while [ "$1" != "" ]; do
     case $1 in
@@ -53,7 +55,7 @@ if [ ! -n "$NOAPT" ]; then
     REPLACE_TO="static-file.exclude-extensions = ( \".php\", \".pl\", \".fcgi\", \".py\" )"
     sed -i -e "s/$REPLACE_FROM/$REPLACE_TO/g" /etc/lighttpd/lighttpd.conf
     REPLACE_FROM="server.username.*"
-    REPLACE_TO="server.username             = \"pi\""
+    REPLACE_TO="server.username             = \"$THISUSER\""
     sed -i -e "s/$REPLACE_FROM/$REPLACE_TO/g" /etc/lighttpd/lighttpd.conf
     [ -f /etc/lighttpd/conf-enabled/10-cgi.conf ] && rm -f /etc/lighttpd/conf-enabled/10-cgi.conf
     /bin/cat <<EOF >/etc/lighttpd/conf-enabled/10-cgi.conf
@@ -89,14 +91,14 @@ fi
 
 # Permission
 echo "Set permissions"
-chown -R pi:www-data "$HTTP_HOME"
-chown -R pi:www-data /var/run/lighttpd
-chown -R pi:www-data /var/log/lighttpd
+chown -R $THISUSER:www-data "$HTTP_HOME"
+chown -R $THISUSER:www-data /var/run/lighttpd
+chown -R $THISUSER:www-data /var/log/lighttpd
 mkdir -p /var/log/webuipi
-chown -R pi:www-data /var/log/webuipi
+chown -R $THISUSER:www-data /var/log/webuipi
 chmod -R 775 /var/log/webuipi
 [ -d "$HTTP_HOME/data" ] && mkdir -p "$HTTP_HOME/data"
-#chown -R pi:www-data "$HTTP_HOME/data"
+#chown -R $THISUSER:www-data "$HTTP_HOME/data"
 chmod -R 775 "$HTTP_HOME/data"
 chmod +x "$HTTP_HOME/play.py"
 
